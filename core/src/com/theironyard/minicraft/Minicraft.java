@@ -11,15 +11,14 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class Minicraft extends ApplicationAdapter {
     final int WIDTH = 100;
     final int HEIGHT = 100;
-    int lastPush;
 
     SpriteBatch batch;
-    TextureRegion up, down, left, right;
-    static final float MAX_VELOCITY = 200;
+    TextureRegion up, down, left, right, currentImage;
+    static final float MAX_VELOCITY = 700;
     float x, y, xv, yv;
 
     @Override
-    public void create () {
+    public void create() {
         batch = new SpriteBatch();
         Texture tiles = new Texture("tiles.png");
         TextureRegion[][] grid = TextureRegion.split(tiles, 16, 16);
@@ -28,76 +27,85 @@ public class Minicraft extends ApplicationAdapter {
         right = grid[6][3];
         left = new TextureRegion(right);
         left.flip(true, false);
+        currentImage = right;
     }
 
     @Override
-    public void render () {
+    public void render() {
         move();
-
-        TextureRegion direction;
-        if(lastPush == 1) {
-            direction = up;
-        }
-        else if(lastPush == 2){
-            direction = down;
-        }
-        else if(lastPush == 3){
-            direction = right;
-        }
-        else{
-            direction = left;
-        }
-
-
-        Gdx.gl.glClearColor(0, 0.5f, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        batch.begin();
-        batch.draw(direction, x, y, WIDTH, HEIGHT);
-        batch.end();
-    }
-     public void move() {
-
-         Gdx.graphics.getHeight();
-
-
-         Gdx.graphics.getWidth();
-
-
-
-
-
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            yv = MAX_VELOCITY;
-            lastPush = 1;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            yv = MAX_VELOCITY * -1;
-            lastPush = 2;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            xv = MAX_VELOCITY;
-            lastPush = 3;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            xv = MAX_VELOCITY * -1;
-            lastPush = 4;
-        }
-
-        y += yv * Gdx.graphics.getDeltaTime();
-        x += xv * Gdx.graphics.getDeltaTime();
-
-        yv = decelerate(0.5f, 0.5f);
-        xv = decelerate(0.5f, 0.5f);
+        draw();
 
     }
-
-    float decelerate(float velocity, float deceleration) {
+    float decelerate(float velocity) {
+        float deceleration = 0.7f;
         velocity *= deceleration;
         if (Math.abs(velocity) < 1) {
             velocity = 0;
         }
-
         return velocity;
     }
 
-}
+    void move() {
+
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            yv = MAX_VELOCITY;
+
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            yv = MAX_VELOCITY * -1;
+
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            xv = MAX_VELOCITY;
+
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            xv = MAX_VELOCITY * -1;
+
+
+        }
+
+        yv = decelerate(yv);
+        xv = decelerate(xv);
+    }
+
+        public void draw() {
+
+            float oldX = x;
+            float oldY = y;
+            y += yv * Gdx.graphics.getDeltaTime();
+            x += xv * Gdx.graphics.getDeltaTime();
+
+
+            if (x < -20 || x > (Gdx.graphics.getWidth() - 90)) {
+                x = oldX;
+            }
+            if (y < -5 || y > (Gdx.graphics.getHeight() - 85)) {
+                y = oldY;
+            }
+
+
+                if (yv > 0){
+                    currentImage = up;
+                }
+                else if(yv < 0) {
+                    currentImage = down;
+                }
+                else if(xv > 0){
+                    currentImage = right;
+                }
+                else if(xv <0 ){
+                    currentImage = left;
+                }
+
+                Gdx.gl.glClearColor(0, 0.5f, 0, 1);
+                Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+                batch.begin();
+                batch.draw(currentImage, x, y, WIDTH, HEIGHT);
+                batch.end();
+
+
+            }
+        }
+
