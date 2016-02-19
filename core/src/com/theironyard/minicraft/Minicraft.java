@@ -13,9 +13,10 @@ public class Minicraft extends ApplicationAdapter {
     final int HEIGHT = 100;
 
     SpriteBatch batch;
-    TextureRegion up, down, left, right,tree, currentImage;
+    TextureRegion up, down, left, right, tree, currentImage;
     static final float MAX_VELOCITY = 700;
     float x, y, xv, yv;
+    int randomX, randomY;
 
     @Override
     public void create() {
@@ -29,11 +30,14 @@ public class Minicraft extends ApplicationAdapter {
         left = new TextureRegion(right);
         left.flip(true, false);
         currentImage = right;
+        randomY  = (int)Math.ceil(Math.random()* Gdx.graphics.getWidth());
+        randomX = (int) Math.ceil(Math.random()* Gdx.graphics.getHeight());
     }
 
     @Override
     public void render() {
         move();
+
         draw();
 
 
@@ -104,8 +108,7 @@ public class Minicraft extends ApplicationAdapter {
                     currentImage = left;
                 }
 
-            int randomX = (int) Math.ceil(Math.random()* Gdx.graphics.getWidth());
-            int randomY = (int) Math.ceil(Math.random()* Gdx.graphics.getHeight());
+
 
             Gdx.gl.glClearColor(0, 0.5f, 0, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
