@@ -25,7 +25,7 @@ public class Minicraft extends ApplicationAdapter {
         batch = new SpriteBatch();
         Texture tiles = new Texture("tiles.png");
         TextureRegion[][] grid = TextureRegion.split(tiles, 16, 16);
-        TextureRegion[][] treeGrid = TextureRegion.split(tiles, 16, 8 );
+        TextureRegion[][] treeGrid = TextureRegion.split(tiles, 16, 8);
         TextureRegion[][] treeGrid2 = TextureRegion.split(tiles, 16, 8);
         down = grid[6][0];
         up = grid[6][1];
@@ -35,8 +35,8 @@ public class Minicraft extends ApplicationAdapter {
         left = new TextureRegion(right);
         left.flip(true, false);
         currentImage = right;
-        randomY  = (int)Math.ceil(Math.random()* Gdx.graphics.getHeight());
-        randomX = (int) Math.ceil(Math.random()* Gdx.graphics.getWidth());
+        randomY = (int) Math.ceil(Math.random() * Gdx.graphics.getHeight());
+        randomX = (int) Math.ceil(Math.random() * Gdx.graphics.getWidth());
         randomMinusY = randomY - 85;
         randomMinusX = randomX;
 
@@ -48,6 +48,7 @@ public class Minicraft extends ApplicationAdapter {
         draw();
 
     }
+
     float decelerate(float velocity) {
         float deceleration = 0.7f;
         velocity *= deceleration;
@@ -81,45 +82,39 @@ public class Minicraft extends ApplicationAdapter {
         xv = decelerate(xv);
     }
 
-        public void draw() {
+    public void draw() {
 
-            float oldX = x;
-            float oldY = y;
-            y += yv * Gdx.graphics.getDeltaTime();
-            x += xv * Gdx.graphics.getDeltaTime();
+        float oldX = x;
+        float oldY = y;
+        y += yv * Gdx.graphics.getDeltaTime();
+        x += xv * Gdx.graphics.getDeltaTime();
 
-
-
-
-            if (x < -20 || x > (Gdx.graphics.getWidth() - 90)) {
-                x = oldX;
-            }
-            if (y < -5 || y > (Gdx.graphics.getHeight() - 85)) {
-                y = oldY;
-            }
-
-
-                if (yv > 0){
-                    currentImage = up;
-                }
-                else if(yv < 0) {
-                    currentImage = down;
-                }
-                else if(xv > 0){
-                    currentImage = right;
-                }
-                else if(xv <0 ){
-                    currentImage = left;
-                }
-
-            Gdx.gl.glClearColor(0, 0.5f, 0, 1);
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-            batch.begin();
-            batch.draw(tree2, randomMinusX, randomMinusY, WIDTH, HEIGHT);
-            batch.draw(tree, randomX, randomY, WIDTH, HEIGHT);
-            batch.draw(currentImage, x, y, WIDTH, HEIGHT);
-            batch.end();
-
-            }
+        if (x < -20 || x > (Gdx.graphics.getWidth() - 90)) {
+            x = oldX;
         }
+        if (y < -5 || y > (Gdx.graphics.getHeight() - 85)) {
+            y = oldY;
+        }
+
+
+        if (yv > 0) {
+            currentImage = up;
+        } else if (yv < 0) {
+            currentImage = down;
+        } else if (xv > 0) {
+            currentImage = right;
+        } else if (xv < 0) {
+            currentImage = left;
+        }
+
+        Gdx.gl.glClearColor(0, 0.5f, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        batch.begin();
+        batch.draw(tree2, randomMinusX, randomMinusY, WIDTH, HEIGHT);
+        batch.draw(tree, randomX, randomY, WIDTH, HEIGHT);
+        batch.draw(currentImage, x, y, WIDTH, HEIGHT);
+        batch.end();
+
+    }
+}
 
