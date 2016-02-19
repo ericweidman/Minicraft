@@ -13,7 +13,7 @@ public class Minicraft extends ApplicationAdapter {
     final int HEIGHT = 100;
 
     SpriteBatch batch;
-    TextureRegion up, down, left, right, currentImage;
+    TextureRegion up, down, left, right,tree, currentImage;
     static final float MAX_VELOCITY = 700;
     float x, y, xv, yv;
 
@@ -25,6 +25,7 @@ public class Minicraft extends ApplicationAdapter {
         down = grid[6][0];
         up = grid[6][1];
         right = grid[6][3];
+        tree = grid[1][0];
         left = new TextureRegion(right);
         left.flip(true, false);
         currentImage = right;
@@ -34,6 +35,9 @@ public class Minicraft extends ApplicationAdapter {
     public void render() {
         move();
         draw();
+
+
+
 
     }
     float decelerate(float velocity) {
@@ -77,6 +81,8 @@ public class Minicraft extends ApplicationAdapter {
             x += xv * Gdx.graphics.getDeltaTime();
 
 
+
+
             if (x < -20 || x > (Gdx.graphics.getWidth() - 90)) {
                 x = oldX;
             }
@@ -98,12 +104,17 @@ public class Minicraft extends ApplicationAdapter {
                     currentImage = left;
                 }
 
-                Gdx.gl.glClearColor(0, 0.5f, 0, 1);
-                Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            int randomX = (int) Math.ceil(Math.random()* Gdx.graphics.getWidth());
+            int randomY = (int) Math.ceil(Math.random()* Gdx.graphics.getHeight());
 
-                batch.begin();
-                batch.draw(currentImage, x, y, WIDTH, HEIGHT);
-                batch.end();
+            Gdx.gl.glClearColor(0, 0.5f, 0, 1);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            batch.begin();
+            batch.draw(tree, randomX, randomY, WIDTH, HEIGHT);
+            batch.draw(currentImage, x, y, WIDTH, HEIGHT);
+            batch.end();
+
+
 
 
             }
