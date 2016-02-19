@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
 
 
 public class Minicraft extends ApplicationAdapter {
@@ -14,7 +15,7 @@ public class Minicraft extends ApplicationAdapter {
     final int HEIGHT = 100;
 
     SpriteBatch batch;
-    TextureRegion up, down, left, right, tree, tree2, currentImage;
+    TextureRegion up, down, left, right, tree, tree2, currentImage, grass;
     static final float MAX_VELOCITY = 700;
     float x, y, xv, yv;
     int randomX, randomY, randomMinusY, randomMinusX;
@@ -27,6 +28,8 @@ public class Minicraft extends ApplicationAdapter {
         TextureRegion[][] grid = TextureRegion.split(tiles, 16, 16);
         TextureRegion[][] treeGrid = TextureRegion.split(tiles, 16, 8);
         TextureRegion[][] treeGrid2 = TextureRegion.split(tiles, 16, 8);
+        TextureRegion[][] grassRegion = TextureRegion.split(tiles, 32 ,8);
+        grass = grassRegion[0][0];
         down = grid[6][0];
         up = grid[6][1];
         right = grid[6][3];
@@ -39,6 +42,14 @@ public class Minicraft extends ApplicationAdapter {
         randomX = (int) Math.ceil(Math.random() * Gdx.graphics.getWidth());
         randomMinusY = randomY - 85;
         randomMinusX = randomX;
+
+
+
+
+
+
+
+
 
     }
 
@@ -96,7 +107,6 @@ public class Minicraft extends ApplicationAdapter {
             y = oldY;
         }
 
-
         if (yv > 0) {
             currentImage = up;
         } else if (yv < 0) {
@@ -110,8 +120,10 @@ public class Minicraft extends ApplicationAdapter {
         Gdx.gl.glClearColor(0, 0.5f, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        batch.draw(tree2, randomMinusX, randomMinusY, WIDTH, HEIGHT);
-        batch.draw(tree, randomX, randomY, WIDTH, HEIGHT);
+        TiledDrawable grassGrid  = new TiledDrawable(grass);
+        grassGrid.draw(batch, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.draw(tree2, randomMinusX, randomMinusY, WIDTH+25, HEIGHT);
+        batch.draw(tree, randomX, randomY, WIDTH +25, HEIGHT);
         batch.draw(currentImage, x, y, WIDTH, HEIGHT);
         batch.end();
 
