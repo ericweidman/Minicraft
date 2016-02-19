@@ -8,40 +8,44 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+
 public class Minicraft extends ApplicationAdapter {
     final int WIDTH = 100;
     final int HEIGHT = 100;
 
     SpriteBatch batch;
-    TextureRegion up, down, left, right, tree, currentImage;
+    TextureRegion up, down, left, right, tree, tree2, currentImage;
     static final float MAX_VELOCITY = 700;
     float x, y, xv, yv;
-    int randomX, randomY;
+    int randomX, randomY, randomMinusY, randomMinusX;
+
 
     @Override
     public void create() {
         batch = new SpriteBatch();
         Texture tiles = new Texture("tiles.png");
         TextureRegion[][] grid = TextureRegion.split(tiles, 16, 16);
+        TextureRegion[][] treeGrid = TextureRegion.split(tiles, 16, 8 );
+        TextureRegion[][] treeGrid2 = TextureRegion.split(tiles, 16, 8);
         down = grid[6][0];
         up = grid[6][1];
         right = grid[6][3];
-        tree = grid[1][0];
+        tree = treeGrid[1][0];
+        tree2 = treeGrid2[2][0];
         left = new TextureRegion(right);
         left.flip(true, false);
         currentImage = right;
-        randomY  = (int)Math.ceil(Math.random()* Gdx.graphics.getWidth());
-        randomX = (int) Math.ceil(Math.random()* Gdx.graphics.getHeight());
+        randomY  = (int)Math.ceil(Math.random()* Gdx.graphics.getHeight());
+        randomX = (int) Math.ceil(Math.random()* Gdx.graphics.getWidth());
+        randomMinusY = randomY - 85;
+        randomMinusX = randomX;
+
     }
 
     @Override
     public void render() {
         move();
-
         draw();
-
-
-
 
     }
     float decelerate(float velocity) {
@@ -108,17 +112,13 @@ public class Minicraft extends ApplicationAdapter {
                     currentImage = left;
                 }
 
-
-
             Gdx.gl.glClearColor(0, 0.5f, 0, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
             batch.begin();
+            batch.draw(tree2, randomMinusX, randomMinusY, WIDTH, HEIGHT);
             batch.draw(tree, randomX, randomY, WIDTH, HEIGHT);
             batch.draw(currentImage, x, y, WIDTH, HEIGHT);
             batch.end();
-
-
-
 
             }
         }
