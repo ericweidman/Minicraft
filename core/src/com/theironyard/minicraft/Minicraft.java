@@ -123,10 +123,6 @@ public class Minicraft extends ApplicationAdapter {
         else{
             img = down;
         }
-
-
-        Gdx.gl.glClearColor(0, 0.5f, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         TiledDrawable grassGrid = new TiledDrawable(grass);
         grassGrid.draw(batch, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
