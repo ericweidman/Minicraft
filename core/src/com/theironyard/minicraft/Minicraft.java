@@ -17,10 +17,11 @@ public class Minicraft extends ApplicationAdapter {
 
     SpriteBatch batch;
     TextureRegion up, down, left, right, tree, tree2, currentImage, grass;
-    Animation walk, walkLeft;
-    static final float MAX_VELOCITY = 500;
+    Animation walk;
+    static final float MAX_VELOCITY = 350;
     float x, y, xv, yv, time;
     int randomX, randomY, randomMinusY, randomMinusX;
+    boolean faceRight = true;
 
 
     @Override
@@ -44,10 +45,9 @@ public class Minicraft extends ApplicationAdapter {
         randomX = (int) Math.ceil(Math.random() * Gdx.graphics.getHeight());
         randomMinusY = randomY - 85;
         randomMinusX = randomX;
-        walk = new Animation(.1f, grid[6][2], grid[6][3]);
+        walk = new Animation(.67f, grid[6][2], grid[6][3]);
 
     }
-
     @Override
     public void render() {
         move();
@@ -76,10 +76,11 @@ public class Minicraft extends ApplicationAdapter {
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             xv = MAX_VELOCITY;
-
+            faceRight = true;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             xv = MAX_VELOCITY * -1;
+            faceRight = false;
 
 
         }
@@ -89,7 +90,7 @@ public class Minicraft extends ApplicationAdapter {
     }
 
     public void draw() {
-        time = Gdx.graphics.getDeltaTime();
+        time += Gdx.graphics.getDeltaTime();
 
         float oldX = x;
         float oldY = y;
@@ -103,14 +104,21 @@ public class Minicraft extends ApplicationAdapter {
             y = oldY;
         }
 
-        if (yv > 0) {
-            currentImage = up;
-        } else if (yv < 0) {
-            currentImage = down;
-        } else if (xv < 0) {
-            currentImage = left;
-        }else if(xv != 0){
-            currentImage = walk.getKeyFrame(time, true);
+        TextureRegion img;
+        if (yv > 0){
+            img = up;
+        }
+        else if(yv < 0){
+            img = down;
+        }
+        else if(xv > 0) {
+            img = walk.getKeyFrame(time, true);
+        }
+        else if(xv < 0){
+            img = walk.getKeyFrame(time, true);
+        }
+        else{
+            img = right;
         }
 
 
@@ -121,7 +129,16 @@ public class Minicraft extends ApplicationAdapter {
         grassGrid.draw(batch, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.draw(tree2, randomMinusX, randomMinusY, 110, 85);
         batch.draw(tree, randomX, randomY, 110, 85);
-        batch.draw(currentImage, x, y, 100, 100);
+
+        if(faceRight){
+            batch.draw(img, x, y, WIDTH, HEIGHT);
+        }
+        else{
+            batch.draw(img, x + 100 , y, WIDTH *-1, HEIGHT);
+        }
+
+
+
         batch.end();
 
     }
