@@ -16,7 +16,7 @@ public class Minicraft extends ApplicationAdapter {
 
     SpriteBatch batch;
     TextureRegion up, down, left, right, tree, tree2, currentImage, grass;
-    static final float MAX_VELOCITY = 700;
+    static final float MAX_VELOCITY = 500;
     float x, y, xv, yv;
     int randomX, randomY, randomMinusY, randomMinusX;
 
@@ -28,7 +28,7 @@ public class Minicraft extends ApplicationAdapter {
         TextureRegion[][] grid = TextureRegion.split(tiles, 16, 16);
         TextureRegion[][] treeGrid = TextureRegion.split(tiles, 16, 8);
         TextureRegion[][] treeGrid2 = TextureRegion.split(tiles, 16, 8);
-        TextureRegion[][] grassRegion = TextureRegion.split(tiles, 32 ,8);
+        TextureRegion[][] grassRegion = TextureRegion.split(tiles, 8, 8);
         grass = grassRegion[0][0];
         down = grid[6][0];
         up = grid[6][1];
@@ -39,17 +39,9 @@ public class Minicraft extends ApplicationAdapter {
         left.flip(true, false);
         currentImage = right;
         randomY = (int) Math.ceil(Math.random() * Gdx.graphics.getHeight());
-        randomX = (int) Math.ceil(Math.random() * Gdx.graphics.getWidth());
+        randomX = (int) Math.ceil(Math.random() * Gdx.graphics.getHeight());
         randomMinusY = randomY - 85;
         randomMinusX = randomX;
-
-
-
-
-
-
-
-
 
     }
 
@@ -120,11 +112,11 @@ public class Minicraft extends ApplicationAdapter {
         Gdx.gl.glClearColor(0, 0.5f, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        TiledDrawable grassGrid  = new TiledDrawable(grass);
+        TiledDrawable grassGrid = new TiledDrawable(grass);
         grassGrid.draw(batch, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch.draw(tree2, randomMinusX, randomMinusY, WIDTH+25, HEIGHT);
-        batch.draw(tree, randomX, randomY, WIDTH +25, HEIGHT);
-        batch.draw(currentImage, x, y, WIDTH, HEIGHT);
+        batch.draw(tree2, randomMinusX, randomMinusY, 110, 85);
+        batch.draw(tree, randomX, randomY, 110, 85);
+        batch.draw(currentImage, x, y, 100, 100);
         batch.end();
 
     }
