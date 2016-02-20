@@ -16,13 +16,13 @@ public class Minicraft extends ApplicationAdapter {
     final int HEIGHT = 100;
 
     SpriteBatch batch;
-    TextureRegion up, down, left, right, tree, tree2, currentImage, grass;
+    TextureRegion up, down, tree, tree2, grass, cactus, cactus2;
     Animation walk;
     static final float MAX_VELOCITY = 350;
     float x, y, xv, yv, time;
     int randomX, randomY, randomMinusY, randomMinusX;
+    int randomCactusX, randomCactusY, randomCactusMinusX, randomCactusMinusY;
     boolean faceRight = true;
-
 
     @Override
     public void create() {
@@ -31,21 +31,25 @@ public class Minicraft extends ApplicationAdapter {
         TextureRegion[][] grid = TextureRegion.split(tiles, 16, 16);
         TextureRegion[][] treeGrid = TextureRegion.split(tiles, 16, 8);
         TextureRegion[][] treeGrid2 = TextureRegion.split(tiles, 16, 8);
+        TextureRegion[][] cactusGrid = TextureRegion.split(tiles, 16, 8);
+        TextureRegion[][] cactusGrid2 = TextureRegion.split(tiles, 16, 8);
         TextureRegion[][] grassRegion = TextureRegion.split(tiles, 8, 8);
+        walk = new Animation(.67f, grid[6][2], grid[6][3]);
+        cactus = cactusGrid[1][1];
+        cactus2 = cactusGrid2[2][1];
         grass = grassRegion[0][0];
         down = grid[6][0];
         up = grid[6][1];
-        right = grid[6][3];
         tree = treeGrid[1][0];
         tree2 = treeGrid2[2][0];
-        left = new TextureRegion(right);
-        left.flip(true, false);
-        currentImage = right;
         randomY = (int) Math.ceil(Math.random() * Gdx.graphics.getHeight());
         randomX = (int) Math.ceil(Math.random() * Gdx.graphics.getHeight());
+        randomCactusY = (int) Math.ceil(Math.random() * Gdx.graphics.getHeight() + Math.random()*101);
+        randomCactusY = (int) Math.ceil(Math.random()* Gdx.graphics.getHeight() + Math.random()*101);
+        randomCactusMinusY = randomCactusY -85;
+        randomCactusMinusX = randomCactusX;
         randomMinusY = randomY - 85;
         randomMinusX = randomX;
-        walk = new Animation(.67f, grid[6][2], grid[6][3]);
 
     }
     @Override
@@ -82,7 +86,6 @@ public class Minicraft extends ApplicationAdapter {
             xv = MAX_VELOCITY * -1;
             faceRight = false;
 
-
         }
 
         yv = decelerate(yv);
@@ -118,7 +121,7 @@ public class Minicraft extends ApplicationAdapter {
             img = walk.getKeyFrame(time, true);
         }
         else{
-            img = right;
+            img = down;
         }
 
 
@@ -127,6 +130,8 @@ public class Minicraft extends ApplicationAdapter {
         batch.begin();
         TiledDrawable grassGrid = new TiledDrawable(grass);
         grassGrid.draw(batch, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.draw(cactus2, randomCactusMinusX, randomCactusMinusY, 110, 85);
+        batch.draw(cactus, randomCactusX, randomCactusY, 110, 85);
         batch.draw(tree2, randomMinusX, randomMinusY, 110, 85);
         batch.draw(tree, randomX, randomY, 110, 85);
 
