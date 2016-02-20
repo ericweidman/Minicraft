@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
@@ -16,8 +17,9 @@ public class Minicraft extends ApplicationAdapter {
 
     SpriteBatch batch;
     TextureRegion up, down, left, right, tree, tree2, currentImage, grass;
+    Animation walk, walkLeft;
     static final float MAX_VELOCITY = 500;
-    float x, y, xv, yv;
+    float x, y, xv, yv, time;
     int randomX, randomY, randomMinusY, randomMinusX;
 
 
@@ -42,6 +44,7 @@ public class Minicraft extends ApplicationAdapter {
         randomX = (int) Math.ceil(Math.random() * Gdx.graphics.getHeight());
         randomMinusY = randomY - 85;
         randomMinusX = randomX;
+        walk = new Animation(.1f, grid[6][2], grid[6][3]);
 
     }
 
@@ -86,6 +89,7 @@ public class Minicraft extends ApplicationAdapter {
     }
 
     public void draw() {
+        time = Gdx.graphics.getDeltaTime();
 
         float oldX = x;
         float oldY = y;
@@ -103,11 +107,12 @@ public class Minicraft extends ApplicationAdapter {
             currentImage = up;
         } else if (yv < 0) {
             currentImage = down;
-        } else if (xv > 0) {
-            currentImage = right;
         } else if (xv < 0) {
             currentImage = left;
+        }else if(xv != 0){
+            currentImage = walk.getKeyFrame(time, true);
         }
+
 
         Gdx.gl.glClearColor(0, 0.5f, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
