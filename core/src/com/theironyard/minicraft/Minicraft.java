@@ -137,8 +137,6 @@ public class Minicraft extends ApplicationAdapter {
             batch.draw(img, x + 100 , y, WIDTH *-1, HEIGHT);
         }
 
-
-
         batch.end();
 
     }
