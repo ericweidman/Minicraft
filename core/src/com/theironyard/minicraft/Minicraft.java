@@ -3,11 +3,13 @@ package com.theironyard.minicraft;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 
 public class Minicraft extends ApplicationAdapter {
@@ -17,6 +19,7 @@ public class Minicraft extends ApplicationAdapter {
     SpriteBatch batch;
     TextureRegion up, down, tree, tree2, grass, cactus, cactus2;
     Animation walk;
+    Viewport viewport;
     static final float MAX_VELOCITY = 350;
     float x, y, xv, yv, time;
     int randomX, randomY, randomMinusY, randomMinusX;
@@ -122,6 +125,9 @@ public class Minicraft extends ApplicationAdapter {
         else{
             img = down;
         }
+
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         TiledDrawable grassGrid = new TiledDrawable(grass);
         grassGrid.draw(batch, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
