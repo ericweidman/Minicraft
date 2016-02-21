@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
-import javafx.beans.value.ChangeListener;
+
 
 public class Minicraft extends ApplicationAdapter {
     static final float MAX_VELOCITY = 350;
@@ -26,31 +26,25 @@ public class Minicraft extends ApplicationAdapter {
     int randomCactusX, randomCactusY, randomCactusMinusX, randomCactusMinusY;
     boolean faceRight = true, zombieFaceRight = true;
 
-    public final float CHANGE_DIRECTION = 5;
-    float zombieTime, deltaTime;
 
     @Override
     public void create() {
         batch = new SpriteBatch();
         Texture tiles = new Texture("tiles.png");
         TextureRegion[][] grid = TextureRegion.split(tiles, 16, 16);
-        TextureRegion[][] zombie = TextureRegion.split(tiles, 16, 16);
-        TextureRegion[][] treeGrid = TextureRegion.split(tiles, 16, 8);
-        TextureRegion[][] treeGrid2 = TextureRegion.split(tiles, 16, 8);
-        TextureRegion[][] cactusGrid = TextureRegion.split(tiles, 16, 8);
-        TextureRegion[][] cactusGrid2 = TextureRegion.split(tiles, 16, 8);
+        TextureRegion[][] bigGrid = TextureRegion.split(tiles, 16, 8);
         TextureRegion[][] grassRegion = TextureRegion.split(tiles, 8, 8);
         walk = new Animation(.7f, grid[6][2], grid[6][3]);
         zombieWalk = new Animation(.3f, grid[6][6], grid[6][7]);
-        cactus = cactusGrid[1][1];
-        cactus2 = cactusGrid2[2][1];
+        cactus = bigGrid[1][1];
+        cactus2 = bigGrid[2][1];
         grass = grassRegion[0][0];
-        zombieUp = zombie[6][5];
-        zombieDown = zombie[6][4];
+        zombieUp = grid[6][5];
+        zombieDown = grid[6][4];
         down = grid[6][0];
         up = grid[6][1];
-        tree = treeGrid[1][0];
-        tree2 = treeGrid2[2][0];
+        tree = bigGrid[1][0];
+        tree2 = bigGrid[2][0];
         randomY = (int) Math.ceil(Math.random() * Gdx.graphics.getHeight());
         randomX = (int) Math.ceil(Math.random() * Gdx.graphics.getHeight());
         randomCactusY = (int) Math.ceil(Math.random() * Gdx.graphics.getHeight() + Math.random() * 101);
@@ -59,11 +53,8 @@ public class Minicraft extends ApplicationAdapter {
         randomCactusMinusX = randomCactusX;
         randomMinusY = randomY - 85;
         randomMinusX = randomX;
-        deltaTime = Gdx.graphics.getDeltaTime();
 
         zombieMove();
-
-
     }
 
 
@@ -157,7 +148,6 @@ public class Minicraft extends ApplicationAdapter {
         } else {
             zombieImg = zombieWalk.getKeyFrame(time, true);
         }
-
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
