@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
 
 public class Minicraft extends ApplicationAdapter {
     static final float MAX_VELOCITY = 350;
-    static final float ZOMBIE_MAX_VELOCITY = 325;
+    static final float ZOMBIE_MAX_VELOCITY = 50;
     final int WIDTH = 100;
     final int HEIGHT = 100;
     SpriteBatch batch;
@@ -22,7 +22,6 @@ public class Minicraft extends ApplicationAdapter {
     float x, y, xv, yv, time, zombieX = 150, zombieY = 150, zombieTime;
     float zombieYv, zombieXv;
     int randomX, randomY, randomMinusY, randomMinusX;
-    ;
     int randomCactusX, randomCactusY, randomCactusMinusX, randomCactusMinusY;
     boolean faceRight = true, zombieFaceRight = true;
 
