@@ -9,54 +9,61 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
-import com.badlogic.gdx.utils.viewport.Viewport;
-
 
 public class Minicraft extends ApplicationAdapter {
+    static final float ZOMBIE_CHANGE = 10;
+    static final float MAX_VELOCITY = 350;
+    static final float ZOMBIE_MAX_VELOCITY = 325;
     final int WIDTH = 100;
     final int HEIGHT = 100;
-
     SpriteBatch batch;
     TextureRegion up, down, tree, tree2, grass, cactus, cactus2;
-    Animation walk;
-    Viewport viewport;
-    static final float MAX_VELOCITY = 350;
-    float x, y, xv, yv, time;
+    TextureRegion zombieUp, zombieDown;
+    Animation walk, zombieWalk;
+    float x, y, xv, yv, time, zombieX = 150, zombieY = 150, zombieTime;
+    float zombieYv, zombieXv;
     int randomX, randomY, randomMinusY, randomMinusX;
+    ;
     int randomCactusX, randomCactusY, randomCactusMinusX, randomCactusMinusY;
-    boolean faceRight = true;
+    boolean faceRight = true, zombieFaceRight = true, changeDirection = false;
 
     @Override
     public void create() {
         batch = new SpriteBatch();
         Texture tiles = new Texture("tiles.png");
         TextureRegion[][] grid = TextureRegion.split(tiles, 16, 16);
+        TextureRegion[][] zombie = TextureRegion.split(tiles, 16, 16);
         TextureRegion[][] treeGrid = TextureRegion.split(tiles, 16, 8);
         TextureRegion[][] treeGrid2 = TextureRegion.split(tiles, 16, 8);
         TextureRegion[][] cactusGrid = TextureRegion.split(tiles, 16, 8);
         TextureRegion[][] cactusGrid2 = TextureRegion.split(tiles, 16, 8);
         TextureRegion[][] grassRegion = TextureRegion.split(tiles, 8, 8);
-        walk = new Animation(.67f, grid[6][2], grid[6][3]);
+        walk = new Animation(.7f, grid[6][2], grid[6][3]);
+        zombieWalk = new Animation(.3f, grid[6][6], grid[6][7]);
         cactus = cactusGrid[1][1];
         cactus2 = cactusGrid2[2][1];
         grass = grassRegion[0][0];
+        zombieUp = zombie[6][5];
+        zombieDown = zombie[6][6];
         down = grid[6][0];
         up = grid[6][1];
         tree = treeGrid[1][0];
         tree2 = treeGrid2[2][0];
         randomY = (int) Math.ceil(Math.random() * Gdx.graphics.getHeight());
         randomX = (int) Math.ceil(Math.random() * Gdx.graphics.getHeight());
-        randomCactusY = (int) Math.ceil(Math.random() * Gdx.graphics.getHeight() + Math.random()*101);
-        randomCactusY = (int) Math.ceil(Math.random()* Gdx.graphics.getHeight() + Math.random()*101);
-        randomCactusMinusY = randomCactusY -85;
+        randomCactusY = (int) Math.ceil(Math.random() * Gdx.graphics.getHeight() + Math.random() * 101);
+        randomCactusY = (int) Math.ceil(Math.random() * Gdx.graphics.getHeight() + Math.random() * 101);
+        randomCactusMinusY = randomCactusY - 85;
         randomCactusMinusX = randomCactusX;
         randomMinusY = randomY - 85;
         randomMinusX = randomX;
 
     }
+
     @Override
     public void render() {
         move();
+        zombieMove();
         draw();
 
     }
@@ -68,6 +75,34 @@ public class Minicraft extends ApplicationAdapter {
             velocity = 0;
         }
         return velocity;
+    }
+
+    void zombieMove() {
+        zombieTime += Gdx.graphics.getDeltaTime() * 100;
+
+        if (Math.random() * 101 >= 0 && Math.random() * 101 <= 25) {
+            zombieXv = ZOMBIE_MAX_VELOCITY;
+        }
+
+        if (Math.random() * 101 >= 26 && Math.random() * 101 <= 50) {
+
+            zombieXv = ZOMBIE_MAX_VELOCITY * -1;
+        }
+
+        if (Math.random() * 101 >= 51 && Math.random() * 101 <= 75) {
+            zombieYv = ZOMBIE_MAX_VELOCITY;
+            zombieFaceRight = true;
+        }
+
+        if (Math.random() * 101 >= 76) {
+
+            zombieXv = ZOMBIE_MAX_VELOCITY * -1;
+            zombieFaceRight = false;
+        }
+
+        zombieXv = decelerate(zombieXv);
+        zombieYv = decelerate(zombieXv);
+
     }
 
     void move() {
@@ -99,32 +134,53 @@ public class Minicraft extends ApplicationAdapter {
 
         float oldX = x;
         float oldY = y;
+        float oldZombieX = zombieX;
+        float oldZombieY = zombieY;
         y += yv * Gdx.graphics.getDeltaTime();
         x += xv * Gdx.graphics.getDeltaTime();
+        zombieY += zombieYv * Gdx.graphics.getDeltaTime();
+        zombieX += zombieXv * Gdx.graphics.getDeltaTime();
 
-        if (x < -20 || x > (Gdx.graphics.getWidth() - 90)) {
+        if (x < -20 || x > Gdx.graphics.getWidth() - 90) {
             x = oldX;
         }
-        if (y < -5 || y > (Gdx.graphics.getHeight() - 85)) {
+        if (y < -5 || y > Gdx.graphics.getHeight() - 85) {
             y = oldY;
         }
 
         TextureRegion img;
-        if (yv > 0){
+        if (yv > 0) {
             img = up;
-        }
-        else if(yv < 0){
+        } else if (yv < 0) {
+            img = down;
+        } else if (xv > 0) {
+            img = walk.getKeyFrame(time, true);
+        } else if (xv < 0) {
+            img = walk.getKeyFrame(time, true);
+        } else {
             img = down;
         }
-        else if(xv > 0) {
-            img = walk.getKeyFrame(time, true);
+
+        if (zombieX < -20 || zombieX > Gdx.graphics.getWidth() - 90) {
+            zombieX = oldZombieX;
         }
-        else if(xv < 0){
-            img = walk.getKeyFrame(time, true);
+        if (zombieY < -5 || zombieY > Gdx.graphics.getHeight() - 85) {
+            zombieY = oldZombieY;
         }
-        else{
-            img = down;
+
+        TextureRegion zombieImg;
+        if (zombieYv > 0) {
+            zombieImg = zombieUp;
+        } else if (zombieYv < 0) {
+            zombieImg = zombieDown;
+        } else if (zombieXv > 0) {
+            zombieImg = zombieWalk.getKeyFrame(time, true);
+        } else if (zombieXv < 0) {
+            zombieImg = walk.getKeyFrame(time, true);
+        } else {
+            zombieImg = down;
         }
+
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -136,11 +192,16 @@ public class Minicraft extends ApplicationAdapter {
         batch.draw(tree2, randomMinusX, randomMinusY, 110, 85);
         batch.draw(tree, randomX, randomY, 110, 85);
 
-        if(faceRight){
-            batch.draw(img, x, y, WIDTH, HEIGHT);
+        if (zombieFaceRight) {
+            batch.draw(zombieImg, zombieX, zombieY, WIDTH, HEIGHT);
+        } else {
+            batch.draw(zombieImg, zombieX + 100, zombieY, WIDTH * -1, HEIGHT);
         }
-        else{
-            batch.draw(img, x + 100 , y, WIDTH *-1, HEIGHT);
+
+        if (faceRight) {
+            batch.draw(img, x, y, WIDTH, HEIGHT);
+        } else {
+            batch.draw(img, x + 100, y, WIDTH * -1, HEIGHT);
         }
 
         batch.end();
