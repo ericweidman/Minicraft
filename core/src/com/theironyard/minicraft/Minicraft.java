@@ -17,7 +17,7 @@ public class Minicraft extends ApplicationAdapter {
     final int WIDTH = 100;
     final int HEIGHT = 100;
     SpriteBatch batch;
-    TextureRegion up, down, tree, tree2, grass, cactus, cactus2;
+    TextureRegion up, down, tree, tree2, grass, cactus, cactus2, upFlip;
     TextureRegion zombieUp, zombieDown;
     Animation walk, zombieWalk;
     float x, y, xv, yv, time, zombieX = 150, zombieY = 150;
