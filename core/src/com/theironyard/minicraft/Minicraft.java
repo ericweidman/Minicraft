@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
+import javafx.beans.value.ChangeListener;
 
 public class Minicraft extends ApplicationAdapter {
     static final float MAX_VELOCITY = 350;
@@ -19,11 +20,14 @@ public class Minicraft extends ApplicationAdapter {
     TextureRegion up, down, tree, tree2, grass, cactus, cactus2;
     TextureRegion zombieUp, zombieDown;
     Animation walk, zombieWalk;
-    float x, y, xv, yv, time, zombieX = 150, zombieY = 150, zombieTime;
+    float x, y, xv, yv, time, zombieX = 150, zombieY = 150;
     float zombieYv, zombieXv;
     int randomX, randomY, randomMinusY, randomMinusX;
     int randomCactusX, randomCactusY, randomCactusMinusX, randomCactusMinusY;
     boolean faceRight = true, zombieFaceRight = true;
+
+    public final float CHANGE_DIRECTION = 5;
+    float zombieTime, deltaTime;
 
     @Override
     public void create() {
@@ -42,7 +46,7 @@ public class Minicraft extends ApplicationAdapter {
         cactus2 = cactusGrid2[2][1];
         grass = grassRegion[0][0];
         zombieUp = zombie[6][5];
-        zombieDown = zombie[6][6];
+        zombieDown = zombie[6][4];
         down = grid[6][0];
         up = grid[6][1];
         tree = treeGrid[1][0];
@@ -55,13 +59,17 @@ public class Minicraft extends ApplicationAdapter {
         randomCactusMinusX = randomCactusX;
         randomMinusY = randomY - 85;
         randomMinusX = randomX;
+        deltaTime = Gdx.graphics.getDeltaTime();
+
+        zombieMove();
+
 
     }
+
 
     @Override
     public void render() {
         move();
-        zombieMove();
         draw();
 
     }
@@ -75,33 +83,6 @@ public class Minicraft extends ApplicationAdapter {
         return velocity;
     }
 
-    void zombieMove() {
-        zombieTime += Gdx.graphics.getDeltaTime() * 100;
-
-        if (Math.random() * 101 >= 0 && Math.random() * 101 <= 25) {
-            zombieXv = ZOMBIE_MAX_VELOCITY;
-        }
-
-        if (Math.random() * 101 >= 26 && Math.random() * 101 <= 50) {
-
-            zombieXv = ZOMBIE_MAX_VELOCITY * -1;
-        }
-
-        if (Math.random() * 101 >= 51 && Math.random() * 101 <= 75) {
-            zombieYv = ZOMBIE_MAX_VELOCITY;
-            zombieFaceRight = true;
-        }
-
-        if (Math.random() * 101 >= 76) {
-
-            zombieXv = ZOMBIE_MAX_VELOCITY * -1;
-            zombieFaceRight = false;
-        }
-
-        zombieXv = decelerate(zombieXv);
-        zombieYv = decelerate(zombieXv);
-
-    }
 
     void move() {
 
@@ -173,10 +154,8 @@ public class Minicraft extends ApplicationAdapter {
             zombieImg = zombieDown;
         } else if (zombieXv > 0) {
             zombieImg = zombieWalk.getKeyFrame(time, true);
-        } else if (zombieXv < 0) {
-            zombieImg = walk.getKeyFrame(time, true);
         } else {
-            zombieImg = down;
+            zombieImg = zombieWalk.getKeyFrame(time, true);
         }
 
 
@@ -205,5 +184,25 @@ public class Minicraft extends ApplicationAdapter {
         batch.end();
 
     }
+
+    public void zombieMove() {
+
+        if (Math.random() * 100 >= 0 && Math.random() * 100 <= 25) {
+            zombieYv = ZOMBIE_MAX_VELOCITY;
+
+        } else if (Math.random() * 100 >= 26 && Math.random() * 100 <= 50) {
+            zombieYv = ZOMBIE_MAX_VELOCITY * -1;
+
+        } else if (Math.random() * 100 >= 51 && Math.random() * 100 <= 75) {
+            zombieXv = ZOMBIE_MAX_VELOCITY;
+            zombieFaceRight = true;
+
+        } else {
+            zombieXv = ZOMBIE_MAX_VELOCITY * -1;
+            zombieFaceRight = false;
+
+        }
+    }
 }
+
 
