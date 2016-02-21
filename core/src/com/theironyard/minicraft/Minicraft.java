@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
 
 public class Minicraft extends ApplicationAdapter {
-    static final float ZOMBIE_CHANGE = 10;
     static final float MAX_VELOCITY = 350;
     static final float ZOMBIE_MAX_VELOCITY = 325;
     final int WIDTH = 100;
@@ -25,7 +24,7 @@ public class Minicraft extends ApplicationAdapter {
     int randomX, randomY, randomMinusY, randomMinusX;
     ;
     int randomCactusX, randomCactusY, randomCactusMinusX, randomCactusMinusY;
-    boolean faceRight = true, zombieFaceRight = true, changeDirection = false;
+    boolean faceRight = true, zombieFaceRight = true;
 
     @Override
     public void create() {
