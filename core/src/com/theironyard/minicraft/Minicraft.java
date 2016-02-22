@@ -13,11 +13,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
 
 public class Minicraft extends ApplicationAdapter {
     static final float MAX_VELOCITY = 350;
-    static final float ZOMBIE_MAX_VELOCITY = 200;
+    static final float ZOMBIE_MAX_VELOCITY = 150;
     final int WIDTH = 100;
     final int HEIGHT = 100;
     SpriteBatch batch;
-    TextureRegion up, down, tree, tree2, grass, cactus, cactus2, upFlip;
+    TextureRegion up, down, tree, tree2, grass, cactus, cactus2;
     TextureRegion zombieUp, zombieDown;
     Animation walk, zombieWalk;
     float x, y, xv, yv, time, zombieX = 150, zombieY = 150;
@@ -33,9 +33,9 @@ public class Minicraft extends ApplicationAdapter {
         Texture tiles = new Texture("tiles.png");
         TextureRegion[][] grid = TextureRegion.split(tiles, 16, 16);
         TextureRegion[][] bigGrid = TextureRegion.split(tiles, 16, 8);
-        TextureRegion[][] grassRegion = TextureRegion.split(tiles, 8, 8);
-        walk = new Animation(.7f, grid[6][2], grid[6][3]);
-        zombieWalk = new Animation(.3f, grid[6][6], grid[6][7]);
+        TextureRegion[][] grassRegion = TextureRegion.split(tiles, 32, 8);
+        walk = new Animation(.2f, grid[6][2], grid[6][3]);
+        zombieWalk = new Animation(.6f, grid[6][6], grid[6][7]);
         cactus = bigGrid[1][1];
         cactus2 = bigGrid[2][1];
         grass = grassRegion[0][0];
@@ -53,10 +53,7 @@ public class Minicraft extends ApplicationAdapter {
         randomCactusMinusX = randomCactusX;
         randomMinusY = randomY - 85;
         randomMinusX = randomX;
-
-
     }
-
 
     @Override
     public void render() {
@@ -74,7 +71,6 @@ public class Minicraft extends ApplicationAdapter {
         }
         return velocity;
     }
-
 
     void move() {
 
@@ -196,8 +192,7 @@ public class Minicraft extends ApplicationAdapter {
             zombieXv = ZOMBIE_MAX_VELOCITY * -1;
             zombieFaceRight = false;
 
+
         }
     }
 }
-
-
