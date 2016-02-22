@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
 
 public class Minicraft extends ApplicationAdapter {
     static final float MAX_VELOCITY = 350;
-    static final float ZOMBIE_MAX_VELOCITY = 50;
+    static final float ZOMBIE_MAX_VELOCITY = 200;
     final int WIDTH = 100;
     final int HEIGHT = 100;
     SpriteBatch batch;
@@ -54,13 +54,14 @@ public class Minicraft extends ApplicationAdapter {
         randomMinusY = randomY - 85;
         randomMinusX = randomX;
 
-        zombieMove();
+
     }
 
 
     @Override
     public void render() {
         move();
+        zombieMove();
         draw();
 
     }
@@ -177,17 +178,21 @@ public class Minicraft extends ApplicationAdapter {
 
     public void zombieMove() {
 
-        if (Math.random() * 100 >= 0 && Math.random() * 100 <= 25) {
+        //if (Math.random() * 100 >= 0 && Math.random() * 100 <= 25) {
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             zombieYv = ZOMBIE_MAX_VELOCITY;
 
-        } else if (Math.random() * 100 >= 26 && Math.random() * 100 <= 50) {
+        } //else if (Math.random() * 100 >= 26 && Math.random() * 100 <= 50) {
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             zombieYv = ZOMBIE_MAX_VELOCITY * -1;
 
-        } else if (Math.random() * 100 >= 51 && Math.random() * 100 <= 75) {
+        } //else if (Math.random() * 100 >= 51 && Math.random() * 100 <= 75) {
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             zombieXv = ZOMBIE_MAX_VELOCITY;
             zombieFaceRight = true;
 
-        } else {
+        } //else {
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             zombieXv = ZOMBIE_MAX_VELOCITY * -1;
             zombieFaceRight = false;
 
