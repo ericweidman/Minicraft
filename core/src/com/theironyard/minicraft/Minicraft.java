@@ -179,20 +179,20 @@ public class Minicraft extends ApplicationAdapter {
     public void zombieMove() {
 
         //if (Math.random() * 100 >= 0 && Math.random() * 100 <= 25) {
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             zombieYv = ZOMBIE_MAX_VELOCITY;
 
         } //else if (Math.random() * 100 >= 26 && Math.random() * 100 <= 50) {
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             zombieYv = ZOMBIE_MAX_VELOCITY * -1;
 
         } //else if (Math.random() * 100 >= 51 && Math.random() * 100 <= 75) {
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             zombieXv = ZOMBIE_MAX_VELOCITY;
             zombieFaceRight = true;
 
         } //else {
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
             zombieXv = ZOMBIE_MAX_VELOCITY * -1;
             zombieFaceRight = false;
 
